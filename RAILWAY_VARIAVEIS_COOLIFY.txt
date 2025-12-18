@@ -1,0 +1,49 @@
+==========================================
+CONFIGURAR VARIÁVEIS NO COOLIFY
+==========================================
+
+Se o usuário é ROOT no Railway, use:
+
+DB_USER=root
+DB_PASSWORD=[valor de MYSQL_ROOT_PASSWORD]
+DB_HOST=[valor de MYSQLHOST]
+DB_PORT=[valor de MYSQLPORT]
+DB_NAME=[valor de MYSQLDATABASE]
+DB_USE_SSL=true
+PORT=8080
+CORS_ORIGIN=https://seudominio.com
+
+==========================================
+EXEMPLO COM VALORES REAIS:
+==========================================
+
+Se o Railway mostra:
+- MYSQLHOST: containers-us-west-123.railway.app
+- MYSQLPORT: 3306
+- MYSQLDATABASE: railway
+- MYSQLUSER: root
+- MYSQL_ROOT_PASSWORD: abc123xyz789
+
+Configure no Coolify:
+DB_USER=root
+DB_PASSWORD=abc123xyz789
+DB_HOST=containers-us-west-123.railway.app
+DB_PORT=3306
+DB_NAME=railway
+DB_USE_SSL=true
+PORT=8080
+CORS_ORIGIN=https://seudominio.com
+
+==========================================
+IMPORTANTE:
+==========================================
+
+✅ Use MYSQL_ROOT_PASSWORD como DB_PASSWORD
+✅ Use MYSQLHOST como DB_HOST
+✅ Use MYSQLPORT como DB_PORT
+✅ Use MYSQLDATABASE como DB_NAME
+✅ Use root como DB_USER (ou MYSQLUSER se diferente)
+✅ Adicione DB_USE_SSL=true (Railway usa SSL)
+
+==========================================
+
