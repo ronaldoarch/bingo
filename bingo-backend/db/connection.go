@@ -46,6 +46,9 @@ func init() {
 	}
 
 	log.Println("Conexão com o banco de dados estabelecida com sucesso!")
+
+	// Criar tabelas automaticamente
+	createTables()
 }
 
 // getEnv retorna uma variável de ambiente ou um valor padrão
@@ -55,6 +58,44 @@ func getEnv(key, defaultValue string) string {
 		return defaultValue
 	}
 	return value
+}
+
+// createTables cria as tabelas necessárias automaticamente
+func createTables() {
+	createTableSQL := `
+	CREATE TABLE IF NOT EXISTS users (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		username VARCHAR(255) NOT NULL UNIQUE,
+		password VARCHAR(255) NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+	`
+
+	_, err := db.Exec(createTableSQL)
+	if err != nil {
+		log.Printf("Aviso: Erro ao criar tabela users (pode já existir): %v", err)
+	} else {
+		log.Println("Tabela 'users' criada/verificada com sucesso!")
+	}
+
+	// Verificar se existe usuário de teste, se não existir, criar
+	var count int
+	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE username = 'user1'").Scan(&count)
+	if err == nil && count == 0 {
+		// Hash da senha 'password' usando bcrypt
+		// Este hash foi gerado previamente: $2a$10$DJG7uHgCvgq2uZH5p5foBuR5m4ZhxZr3ihSoC2C6OdqlxXH2OZAsu
+		testUserSQL := `
+		INSERT INTO users (username, password) VALUES 
+		('user1', '$2a$10$DJG7uHgCvgq2uZH5p5foBuR5m4ZhxZr3ihSoC2C6OdqlxXH2OZAsu')
+		ON DUPLICATE KEY UPDATE username=username;
+		`
+		_, err = db.Exec(testUserSQL)
+		if err != nil {
+			log.Printf("Aviso: Erro ao criar usuário de teste: %v", err)
+		} else {
+			log.Println("Usuário de teste 'user1' criado com sucesso!")
+		}
+	}
 }
 
 func GetUserByUsername(username string) (models.User, error) {
