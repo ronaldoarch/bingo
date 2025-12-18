@@ -26,7 +26,13 @@ func init() {
 	if dbHost == "localhost" {
 		dbHost = "127.0.0.1"
 	}
+	
+	// Verificar se precisa usar SSL (Railway, produção, etc)
+	useSSL := getEnv("DB_USE_SSL", "false")
 	connectionString := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
+	if useSSL == "true" {
+		connectionString += "?tls=true"
+	}
 	
 	db, err = sql.Open("mysql", connectionString)
 	if err != nil {
