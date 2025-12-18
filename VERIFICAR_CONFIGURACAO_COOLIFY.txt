@@ -1,0 +1,62 @@
+==========================================
+VERIFICAR CONFIGURAÇÃO NO COOLIFY
+==========================================
+
+Você já configurou as variáveis básicas! ✅
+
+Verifique se TODAS estas variáveis estão configuradas:
+
+✅ DB_USER=root
+✅ DB_PASSWORD=NVkFDIeGcWKZvikmOJXbnVeXiNSuTtJR
+✅ DB_HOST=mysql.railway.internal
+✅ DB_PORT=3306 (ou 50811 se for porta externa)
+✅ DB_NAME=railway
+
+⚠️ ADICIONE ESTAS VARIÁVEIS QUE ESTÃO FALTANDO:
+
+DB_USE_SSL=true
+PORT=8080
+CORS_ORIGIN=https://seudominio.com
+
+==========================================
+SOBRE A PORTA:
+==========================================
+
+No Railway:
+- MYSQLPORT: 3306 (porta interna)
+- Mas pode ter porta externa diferente (50811)
+
+Para conexão do Coolify ao Railway:
+- Se estiver na mesma rede: use 3306
+- Se for conexão externa: use a porta externa (50811)
+
+Mas geralmente mysql.railway.internal usa porta 3306.
+
+==========================================
+VARIÁVEIS COMPLETAS PARA ADICIONAR:
+==========================================
+
+No Coolify, adicione estas 3 variáveis:
+
+1. DB_USE_SSL=true
+   (Importante! Railway requer SSL)
+
+2. PORT=8080
+   (Porta do back-end Go)
+
+3. CORS_ORIGIN=https://seudominio.com
+   (URL do front-end, ajuste depois)
+
+==========================================
+DEPOIS DE ADICIONAR:
+==========================================
+
+1. Salve as variáveis
+2. Faça redeploy do back-end
+3. Verifique os logs para confirmar:
+   - "Conexão com o banco de dados estabelecida com sucesso!"
+   - "Tabela 'users' criada/verificada com sucesso!"
+   - "Usuário de teste 'user1' criado com sucesso!"
+
+==========================================
+
