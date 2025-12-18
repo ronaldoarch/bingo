@@ -10,12 +10,14 @@ WORKDIR /app
 # Copiar go.mod
 COPY go.mod ./
 
-# Gerar go.sum e baixar dependências
-# go mod tidy gera o go.sum automaticamente se não existir
-RUN go mod tidy && go mod download
+# Baixar dependências primeiro (sem código fonte ainda)
+RUN go mod download
 
 # Copiar código fonte
 COPY . .
+
+# Gerar go.sum e sincronizar dependências
+RUN go mod tidy
 
 # Compilar aplicação
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bingo-backend main.go
