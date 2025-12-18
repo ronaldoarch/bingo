@@ -46,7 +46,9 @@ func init() {
 	useSSL := getEnv("DB_USE_SSL", "false")
 	connectionString := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
 	if useSSL == "true" {
-		connectionString += "?tls=true"
+		// Railway usa certificados SSL, mas pode não validar contra o hostname
+		// Usar skip-verify para aceitar certificados do Railway
+		connectionString += "?tls=skip-verify"
 	}
 	
 	// Log da conexão (sem senha) para debug
