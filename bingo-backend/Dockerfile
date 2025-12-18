@@ -7,18 +7,17 @@ RUN apk add --no-cache git
 # Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar go.mod e go.sum (se existir)
+# Copiar go.mod primeiro (para cache de dependências)
 COPY go.mod ./
-COPY go.sum* ./
 
-# Baixar dependências
+# Baixar dependências (sem código fonte ainda, mas go.mod tem as versões)
 RUN go mod download
 
 # Copiar código fonte
 COPY . .
 
-# Verificar e atualizar dependências (gera go.sum se necessário)
-RUN go mod tidy && go mod verify
+# Gerar/atualizar go.sum com base no código fonte
+RUN go mod tidy
 
 # Compilar aplicação
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bingo-backend main.go
