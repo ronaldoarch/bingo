@@ -7,11 +7,12 @@ RUN apk add --no-cache git
 # Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar go.mod e go.sum
-COPY go.mod go.sum ./
+# Copiar go.mod (go.sum pode não existir ou estar vazio)
+COPY go.mod ./
+COPY go.sum* ./
 
-# Baixar dependências
-RUN go mod download
+# Gerar go.sum e baixar dependências
+RUN go mod tidy && go mod download
 
 # Copiar código fonte
 COPY . .
