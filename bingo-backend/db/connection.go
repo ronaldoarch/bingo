@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"bingo-backend/models"
@@ -21,11 +22,25 @@ func init() {
 	dbPort := getEnv("DB_PORT", "3306")
 	dbName := getEnv("DB_NAME", "bingo")
 	
-	// Construir string de conexão
+	// Limpar host - remover porta, caminho ou protocolo se estiverem incluídos
+	// Exemplo: "shortline.proxy.rlwy.net:50811" -> "shortline.proxy.rlwy.net"
+	if idx := len(dbHost); idx > 0 {
+		// Remover tudo após : (porta) ou / (caminho)
+		for i := 0; i < len(dbHost); i++ {
+			if dbHost[i] == ':' || dbHost[i] == '/' {
+				dbHost = dbHost[:i]
+				break
+			}
+		}
+	}
+	
 	// Usar 127.0.0.1 ao invés de localhost para forçar IPv4 e evitar problemas com ::1
 	if dbHost == "localhost" {
 		dbHost = "127.0.0.1"
 	}
+	
+	// Limpar porta - remover caracteres não numéricos
+	dbPort = strings.TrimSpace(dbPort)
 	
 	// Verificar se precisa usar SSL (Railway, produção, etc)
 	useSSL := getEnv("DB_USE_SSL", "false")
@@ -34,9 +49,12 @@ func init() {
 		connectionString += "?tls=true"
 	}
 	
+	// Log da conexão (sem senha) para debug
+	log.Printf("Tentando conectar ao MySQL: %s@tcp(%s:%s)/%s (SSL: %s)", dbUser, dbHost, dbPort, dbName, useSSL)
+	
 	db, err = sql.Open("mysql", connectionString)
 	if err != nil {
-		log.Fatal("Erro ao conectar ao banco de dados:", err)
+		log.Fatalf("Erro ao conectar ao banco de dados: %v", err)
 	}
 
 	// Testar a conexão
