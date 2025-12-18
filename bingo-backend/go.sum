@@ -1,2 +1,0 @@
-# Este arquivo será gerado automaticamente pelo go mod tidy durante o build
-# O Dockerfile executa 'go mod tidy' antes de compilar
