@@ -1,0 +1,24 @@
+# Git
+.git
+.gitignore
+
+# Build
+bingo-backend
+bin
+
+# Logs
+*.log
+bingo.log
+
+# Ambiente
+.env
+env.template
+
+# Scripts de deploy
+*.sh
+Makefile
+
+# Documentação
+*.md
+*.txt
+

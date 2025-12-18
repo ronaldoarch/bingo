@@ -1,0 +1,27 @@
+# Git
+.git
+.gitignore
+
+# Dependências
+node_modules
+
+# Build
+build
+dist
+
+# Logs
+*.log
+npm-debug.log*
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+

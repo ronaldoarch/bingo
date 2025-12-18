@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: bingo-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: bingo
+      MYSQL_USER: bingo_user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-bingo_password}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./bingo-backend/database.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - bingo-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./bingo-backend
+      dockerfile: Dockerfile
+    container_name: bingo-backend
+    restart: always
+    environment:
+      DB_USER: bingo_user
+      DB_PASSWORD: ${MYSQL_PASSWORD:-bingo_password}
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: bingo
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - bingo-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/login"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./bingo-frontend
+      dockerfile: Dockerfile
+    container_name: bingo-frontend
+    restart: always
+    environment:
+      REACT_APP_API_URL: http://localhost:8080
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - bingo-network
+
+volumes:
+  mysql_data:
+
+networks:
+  bingo-network:
+    driver: bridge
+

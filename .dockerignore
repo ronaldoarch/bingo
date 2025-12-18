@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+
+# Dependências
+node_modules
+vendor
+
+# Build
+build
+dist
+bin
+
+# Logs
+*.log
+npm-debug.log*
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Deploy
+deploy
+
