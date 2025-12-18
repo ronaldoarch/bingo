@@ -1,0 +1,47 @@
+==========================================
+COMANDOS PARA COMPILAR NO SERVIDOR
+==========================================
+
+Execute estes comandos na ordem (copie e cole):
+
+cd ~/bingo-backend
+
+# Desabilitar verificação de sumdb
+export GOSUMDB=off
+
+# Configurar GOPATH local
+export GOPATH=$HOME/go
+mkdir -p $GOPATH
+
+# Limpar e tentar novamente
+go clean -modcache 2>/dev/null || true
+
+# Atualizar go.mod e go.sum
+go mod tidy
+
+# Compilar (COMANDO CORRETO)
+go build -o bingo-backend main.go
+
+# Verificar se compilou
+ls -lh bingo-backend
+
+# Se compilou, dar permissão
+chmod +x bingo-backend
+
+# Testar
+./bingo-backend
+
+==========================================
+SE AINDA DER ERRO:
+==========================================
+
+Tente esta versão mais simples:
+
+cd ~/bingo-backend
+export GOSUMDB=off
+go mod tidy
+go build -o bingo-backend main.go
+chmod +x bingo-backend
+
+==========================================
+

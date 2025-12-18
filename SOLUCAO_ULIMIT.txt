@@ -1,0 +1,49 @@
+==========================================
+SOLUÇÃO PARA ERRO DE ULIMIT NO SERVIDOR
+==========================================
+
+O erro "failed to create new OS thread" indica que o limite de processos está muito baixo.
+
+Execute estes comandos NO SERVIDOR:
+
+cd ~/bingo-backend
+
+# 1. Verificar limite atual
+ulimit -u
+
+# 2. Aumentar limite de processos (temporário para esta sessão)
+ulimit -u 4096
+
+# 3. Verificar se aumentou
+ulimit -u
+
+# 4. Agora tentar compilar novamente
+export GOSUMDB=off
+rm -f go.sum
+go mod tidy
+go build -o bingo-backend main.go
+
+# 5. Verificar se compilou
+ls -lh bingo-backend
+
+# 6. Dar permissão
+chmod +x bingo-backend
+
+# 7. Testar
+./bingo-backend
+
+==========================================
+SE AINDA DER ERRO:
+==========================================
+
+Tente aumentar mais:
+
+ulimit -u 8192
+go build -o bingo-backend main.go
+
+OU compilar com menos threads:
+
+GOMAXPROCS=1 go build -o bingo-backend main.go
+
+==========================================
+

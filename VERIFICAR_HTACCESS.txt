@@ -1,0 +1,68 @@
+==========================================
+VERIFICAR E CORRIGIR .HTACCESS
+==========================================
+
+O problema pode estar no .htaccess existente.
+Execute no servidor:
+
+# 1. Ver conteúdo do .htaccess atual
+cat ~/public_html/.htaccess
+
+# 2. Fazer backup do .htaccess antigo
+cp ~/public_html/.htaccess ~/public_html/.htaccess.backup
+
+# 3. Criar novo .htaccess para React
+cat > ~/public_html/.htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes
+
+# Habilitar rewrite engine
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Não reescrever arquivos e diretórios existentes
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  
+  # Redirecionar tudo para index.html (SPA)
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Permitir acesso a arquivos estáticos
+<FilesMatch "\.(js|css|json|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+  Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+EOF
+
+# 4. Verificar se foi criado corretamente
+cat ~/public_html/.htaccess
+
+# 5. Testar acesso novamente no navegador
+
+==========================================
+SE AINDA DER 403:
+==========================================
+
+# Verificar se o diretório public_html é o correto
+pwd
+ls -la ~/public_html/
+
+# Verificar logs de erro (se tiver acesso)
+tail -f ~/logs/error_log
+
+# Ou verificar configuração do Apache
+# (pode precisar de acesso root/sudo)
+
+==========================================
+ALTERNATIVA: TESTAR SEM .HTACCESS
+==========================================
+
+# Renomear .htaccess temporariamente
+mv ~/public_html/.htaccess ~/public_html/.htaccess.old
+
+# Testar acesso
+# Se funcionar, o problema era o .htaccess
+
+==========================================
+

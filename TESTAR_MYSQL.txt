@@ -1,0 +1,57 @@
+==========================================
+TESTAR CONEXÃO MYSQL NO SERVIDOR
+==========================================
+
+O erro mostra que as credenciais podem estar incorretas ou há problema com IPv6.
+
+Execute no servidor para testar a conexão:
+
+# 1. Testar conexão MySQL diretamente
+mysql -u u127271520_bingo -p -h 127.0.0.1 u127271520_bingo
+
+# Quando pedir senha, digite a senha do MySQL
+
+# Se conectar com sucesso, você verá: mysql>
+
+# 2. Verificar se a tabela existe
+USE u127271520_bingo;
+SHOW TABLES;
+SELECT * FROM users;
+
+# 3. Sair do MySQL
+exit;
+
+==========================================
+SE DER ERRO DE ACESSO:
+==========================================
+
+1. Verifique as credenciais no painel Hostinger:
+   - Acesse: https://hpanel.hostinger.com/
+   - Vá em: MySQL Databases
+   - Confirme: usuário, senha, nome do banco
+
+2. Tente com 127.0.0.1 ao invés de localhost:
+   export DB_HOST="127.0.0.1"
+
+3. Verifique se o usuário tem permissão:
+   - No painel Hostinger, certifique-se de que o usuário tem acesso ao banco
+
+==========================================
+CONFIGURAR VARIÁVEIS CORRETAS:
+==========================================
+
+cd ~/bingo-backend
+
+# Use as credenciais REAIS do seu MySQL
+export DB_USER="u127271520_bingo"  # ou o usuário correto
+export DB_PASSWORD="SENHA_REAL_AQUI"  # SUBSTITUA pela senha real!
+export DB_HOST="127.0.0.1"  # Use 127.0.0.1 para forçar IPv4
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"  # nome exato do banco
+export PORT="8080"
+
+# Testar
+./bingo-backend
+
+==========================================
+

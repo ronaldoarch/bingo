@@ -1,0 +1,88 @@
+==========================================
+SOLUÇÃO PARA LITESPEED (HOSTINGER)
+==========================================
+
+O servidor usa LiteSpeed, não Apache!
+Isso pode exigir configurações diferentes.
+
+Execute no servidor:
+
+# 1. Corrigir permissões (CRÍTICO para LiteSpeed)
+chmod 755 ~
+chmod 755 ~/public_html
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+
+# 2. Verificar permissões
+ls -ld ~
+ls -ld ~/public_html
+# Ambos devem mostrar: drwxr-xr-x
+
+# 3. Criar .htaccess compatível com LiteSpeed
+cd ~/public_html
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+chmod 644 .htaccess
+
+# 4. Verificar se index.html existe e tem conteúdo
+ls -la index.html
+head -10 index.html
+
+# 5. Testar localmente
+curl http://localhost/ | head -10
+
+==========================================
+VERIFICAR NO PAINEL HOSTINGER:
+==========================================
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → Configurações
+3. Verifique:
+   - Diretório raiz: deve ser "public_html"
+   - Se há "Proteção de Diretório" ativada (DESATIVE se estiver)
+   - Se há bloqueios configurados
+
+4. Vá em: Sites → Seu Site → Avançado
+   - Verifique configurações do LiteSpeed
+   - Verifique se há restrições
+
+==========================================
+SE AINDA DER 403:
+==========================================
+
+# Tentar sem .htaccess completamente
+cd ~/public_html
+mv .htaccess .htaccess.backup
+# Testar acesso
+# Se funcionar, o problema é o .htaccess
+
+# Ou criar .htaccess ainda mais simples:
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+EOF
+
+==========================================
+VERIFICAR SE É PROBLEMA DE CONFIGURAÇÃO:
+==========================================
+
+O erro 403 persistente pode indicar:
+1. Configuração no painel Hostinger bloqueando
+2. Proteção de diretório ativada
+3. Firewall bloqueando
+4. Configuração do LiteSpeed
+
+Neste caso, pode ser necessário contatar suporte da Hostinger.
+
+==========================================
+

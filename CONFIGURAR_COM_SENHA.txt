@@ -1,0 +1,59 @@
+==========================================
+CONFIGURAR BACK-END COM A SENHA REAL
+==========================================
+
+Execute estes comandos NO SERVIDOR:
+
+cd ~/bingo-backend
+
+# Configurar variáveis de ambiente com a senha real
+export DB_USER="u127271520_bingo"
+export DB_PASSWORD="2403Auror@"
+export DB_HOST="127.0.0.1"
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"
+export PORT="8080"
+
+# Testar conexão MySQL primeiro (opcional)
+mysql -u u127271520_bingo -p2403Auror@ -h 127.0.0.1 u127271520_bingo -e "SHOW TABLES;"
+
+# Iniciar o back-end
+./bingo-backend
+
+==========================================
+SE FUNCIONAR, VOCÊ VERÁ:
+==========================================
+
+Conexão com o banco de dados estabelecida com sucesso!
+Servidor rodando na porta 8080
+
+==========================================
+PARA CRIAR SCRIPT DE INICIALIZAÇÃO:
+==========================================
+
+Criar arquivo start.sh:
+
+nano start.sh
+
+Cole:
+
+#!/bin/bash
+cd ~/bingo-backend
+export DB_USER="u127271520_bingo"
+export DB_PASSWORD="2403Auror@"
+export DB_HOST="127.0.0.1"
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"
+export PORT="8080"
+./bingo-backend
+
+Salvar: Ctrl+X, Y, Enter
+
+Dar permissão:
+chmod +x start.sh
+
+Executar:
+./start.sh
+
+==========================================
+

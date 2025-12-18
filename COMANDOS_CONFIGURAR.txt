@@ -1,0 +1,84 @@
+==========================================
+CONFIGURAR BANCO DE DADOS - COMANDOS
+==========================================
+
+✅ Back-end compilado com sucesso!
+❌ Agora precisa configurar as credenciais do MySQL
+
+Execute no servidor:
+
+cd ~/bingo-backend
+
+# OPÇÃO 1: Configurar variáveis de ambiente diretamente
+# (Substitua com suas credenciais reais do MySQL)
+
+export DB_USER="seu_usuario_mysql"
+export DB_PASSWORD="sua_senha_mysql"
+export DB_HOST="localhost"
+export DB_PORT="3306"
+export DB_NAME="bingo"
+export PORT="8080"
+
+# Testar
+./bingo-backend
+
+==========================================
+OPÇÃO 2: Criar script de inicialização
+==========================================
+
+Criar arquivo start.sh:
+
+nano start.sh
+
+Cole:
+
+#!/bin/bash
+cd ~/bingo-backend
+export DB_USER="seu_usuario_mysql"
+export DB_PASSWORD="sua_senha_mysql"
+export DB_HOST="localhost"
+export DB_PORT="3306"
+export DB_NAME="bingo"
+export PORT="8080"
+./bingo-backend
+
+Salvar: Ctrl+X, Y, Enter
+
+Dar permissão:
+chmod +x start.sh
+
+Executar:
+./start.sh
+
+==========================================
+OBTER CREDENCIAIS DO MYSQL:
+==========================================
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → MySQL Databases
+3. Se não tem banco criado:
+   - Clique em "Create Database"
+   - Nome: bingo
+   - Anote: usuário, senha, host
+4. Execute o SQL para criar a tabela:
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+==========================================
+EXEMPLO DE CREDENCIAIS HOSTINGER:
+==========================================
+
+Geralmente são assim:
+DB_USER="u127271520_bingo"
+DB_PASSWORD="senha_gerada_pela_hostinger"
+DB_HOST="localhost"
+DB_PORT="3306"
+DB_NAME="u127271520_bingo"
+
+==========================================
+

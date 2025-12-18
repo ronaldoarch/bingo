@@ -1,0 +1,67 @@
+==========================================
+CONFIGURAR BANCO DE DADOS
+==========================================
+
+O back-end compilou com sucesso! ✅
+Agora precisa configurar o arquivo .env com as credenciais do MySQL.
+
+Execute no servidor:
+
+cd ~/bingo-backend
+
+# 1. Criar arquivo .env a partir do template
+cp env.template .env
+
+# 2. Editar o arquivo .env
+nano .env
+
+# 3. Configure com suas credenciais MySQL da Hostinger:
+#    - Acesse o painel Hostinger → MySQL Databases
+#    - Anote: usuário, senha, host, nome do banco
+#    - Cole no arquivo .env:
+
+DB_USER=seu_usuario_mysql_aqui
+DB_PASSWORD=sua_senha_mysql_aqui
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=bingo
+PORT=8080
+
+# 4. Salvar: Ctrl+X, depois Y, depois Enter
+
+# 5. Testar novamente
+./bingo-backend
+
+==========================================
+OBTER CREDENCIAIS DO MYSQL:
+==========================================
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → MySQL Databases
+3. Anote:
+   - Database Name (ex: u127271520_bingo)
+   - Database User (ex: u127271520_user)
+   - Database Password
+   - Database Host (geralmente: localhost)
+
+==========================================
+CRIAR BANCO DE DADOS:
+==========================================
+
+Se ainda não criou o banco:
+
+1. No painel Hostinger → MySQL Databases
+2. Clique em "Create Database"
+3. Nome: bingo
+4. Anote as credenciais geradas
+5. Execute o SQL:
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+==========================================
+

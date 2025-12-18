@@ -1,0 +1,56 @@
+==========================================
+CONFIGURAR E FAZER UPLOAD DO FRONT-END
+==========================================
+
+Agora vamos configurar o front-end React.
+
+NO SEU COMPUTADOR LOCAL:
+
+# 1. Navegar para o front-end
+cd /Users/ronaldodiasdesousa/Desktop/Bingo/bingo-frontend
+
+# 2. Instalar dependências (se ainda não instalou)
+npm install
+
+# 3. Criar arquivo .env.production com a URL da API
+echo "REACT_APP_API_URL=http://212.85.6.24:8080" > .env.production
+
+# OU se você tem um domínio configurado:
+# echo "REACT_APP_API_URL=https://api.seudominio.com" > .env.production
+
+# 4. Fazer build de produção
+npm run build
+
+# 5. Fazer upload para o servidor
+# (No seu computador, novo terminal)
+cd /Users/ronaldodiasdesousa/Desktop/Bingo
+scp -P 65002 -r bingo-frontend/build/* u127271520@212.85.6.24:~/public_html/
+
+==========================================
+OU USE O SCRIPT:
+==========================================
+
+# No seu computador local
+cd /Users/ronaldodiasdesousa/Desktop/Bingo/bingo-frontend
+echo "REACT_APP_API_URL=http://212.85.6.24:8080" > .env.production
+npm run build
+cd ..
+./upload_frontend.sh
+
+==========================================
+DEPOIS DO UPLOAD:
+==========================================
+
+Acesse: http://212.85.6.24
+
+Ou se tiver domínio: http://lightsteelblue-wren-733543.hostingersite.com
+
+==========================================
+CREDENCIAIS DE TESTE:
+==========================================
+
+- Usuário: user1
+- Senha: password
+
+==========================================
+

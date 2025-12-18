@@ -1,0 +1,73 @@
+==========================================
+SOLUÇÃO FINAL PARA ERRO 403
+==========================================
+
+O servidor está retornando 403 Forbidden.
+Execute no servidor:
+
+# 1. Verificar permissões do diretório pai
+ls -la ~ | grep public_html
+
+# 2. Verificar permissões de public_html
+ls -ld ~/public_html
+
+# 3. Corrigir permissões do diretório
+chmod 755 ~/public_html
+chmod 755 ~
+
+# 4. Verificar e corrigir .htaccess
+cd ~/public_html
+
+# Remover .htaccess temporariamente para testar
+mv .htaccess .htaccess.old
+
+# Criar .htaccess mínimo e correto
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+chmod 644 .htaccess
+
+# 5. Verificar se index.html tem conteúdo
+head -30 index.html
+
+# 6. Testar localmente
+curl http://localhost/ | head -20
+
+# 7. Se ainda der erro, verificar logs
+# tail -f ~/logs/error_log
+
+==========================================
+SE AINDA DER 403:
+==========================================
+
+# Verificar se há arquivo .htpasswd ou outras restrições
+ls -la ~/public_html/ | grep -E "\.ht|passwd"
+
+# Verificar configuração do Apache (se tiver acesso)
+# Pode ser necessário contatar suporte da Hostinger
+
+# Alternativa: verificar se precisa configurar algo no painel
+# Acesse: https://hpanel.hostinger.com/
+# Vá em: Sites → Seu Site → Configurações
+
+==========================================
+TESTAR SEM .HTACCESS:
+==========================================
+
+cd ~/public_html
+rm .htaccess
+# Testar acesso
+# Se funcionar, o problema era o .htaccess
+
+==========================================
+

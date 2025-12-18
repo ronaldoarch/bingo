@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "=========================================="
+echo "Testando Acesso ao Servidor"
+echo "=========================================="
+echo ""
+echo "1. Conecte ao servidor primeiro:"
+echo "   ssh -p 65002 u127271520@212.85.6.24"
+echo ""
+echo "2. Depois execute os comandos no servidor"
+echo ""
+echo "3. Teste do seu computador:"
+curl -I http://212.85.6.24/ 2>&1 | head -5
+echo ""
+echo "Se ainda der 403, verifique no painel Hostinger:"
+echo "https://hpanel.hostinger.com/"
+echo "Sites → Seu Site → Configurações"
+echo "Desative 'Proteção de Diretório' se estiver ativada"

@@ -1,0 +1,60 @@
+==========================================
+COMANDOS FINAIS PARA EXECUTAR NO SERVIDOR
+==========================================
+
+Execute TODOS estes comandos:
+
+# Verificar grupos
+groups
+id
+
+# Corrigir permissões do diretório home
+chmod 755 ~
+chmod g+r ~
+chmod g+x ~
+
+# Corrigir permissões de public_html
+chmod 755 ~/public_html
+chmod g+r ~/public_html
+chmod g+x ~/public_html
+
+# Corrigir permissões dos arquivos
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+
+# Verificar permissões finais
+ls -ld ~
+ls -ld ~/public_html
+
+# Criar .htaccess mínimo
+cd ~/public_html
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+chmod 644 .htaccess
+
+# Testar localmente
+curl http://localhost/ | head -5
+
+==========================================
+DEPOIS TESTE DO SEU COMPUTADOR:
+==========================================
+
+curl http://212.85.6.24/
+
+# Se ainda der 403, verifique no painel Hostinger:
+# Sites → Seu Site → Configurações
+# Desative "Proteção de Diretório"
+
+==========================================
+

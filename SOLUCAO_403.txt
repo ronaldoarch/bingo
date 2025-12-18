@@ -1,0 +1,83 @@
+==========================================
+SOLUÇÃO PARA ERRO 403 FORBIDDEN
+==========================================
+
+O erro 403 geralmente é causado por:
+1. Permissões incorretas dos arquivos
+2. Arquivos no diretório errado
+3. Configuração do servidor web
+
+Execute no servidor:
+
+# 1. Verificar onde estão os arquivos
+ls -la ~/public_html/
+
+# 2. Verificar permissões
+ls -la ~/public_html/index.html
+
+# 3. Corrigir permissões (se necessário)
+chmod 644 ~/public_html/*
+chmod 755 ~/public_html
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+
+# 4. Verificar se index.html existe
+ls -la ~/public_html/index.html
+
+# 5. Verificar estrutura de diretórios
+cd ~/public_html
+ls -la
+
+==========================================
+SE OS ARQUIVOS ESTÃO EM SUBDIRETÓRIO:
+==========================================
+
+Se os arquivos foram enviados para um subdiretório:
+
+# Verificar estrutura
+ls -la ~/public_html/
+
+# Se houver uma pasta "build" ou similar, mover arquivos:
+cd ~/public_html
+mv build/* .
+rmdir build
+
+# OU criar link simbólico:
+# ln -s ~/public_html/build ~/public_html/app
+
+==========================================
+VERIFICAR CONFIGURAÇÃO DO SERVIDOR:
+==========================================
+
+# Verificar se há arquivo .htaccess
+ls -la ~/public_html/.htaccess
+
+# Se não existir, criar um básico:
+cat > ~/public_html/.htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes
+EOF
+
+chmod 644 ~/public_html/.htaccess
+
+==========================================
+VERIFICAR LOGS DO SERVIDOR:
+==========================================
+
+# Ver logs de erro (se tiver acesso)
+tail -f ~/logs/error_log
+
+# Ou verificar logs do Apache/Nginx
+# (depende da configuração da Hostinger)
+
+==========================================
+TESTAR ACESSO DIRETO:
+==========================================
+
+# Testar se consegue ler o arquivo
+cat ~/public_html/index.html | head -20
+
+# Se conseguir ler, o problema é de configuração do servidor web
+
+==========================================
+

@@ -1,0 +1,69 @@
+==========================================
+CORRIGIR GRUPO E CRIAR .HTACCESS CORRETO
+==========================================
+
+Execute no servidor:
+
+# 1. Mudar grupo de public_html para apache (se possível)
+chgrp apache ~/public_html 2>/dev/null || echo "Não foi possível mudar grupo"
+
+# 2. Garantir permissões corretas
+chmod 755 ~/public_html
+chmod g+r ~/public_html
+chmod g+x ~/public_html
+
+# 3. Verificar permissões
+ls -ld ~/public_html
+
+# 4. Criar .htaccess CORRETO (comando completo)
+cd ~/public_html
+rm -f .htaccess .htaccess.*
+
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+chmod 644 .htaccess
+
+# 5. Verificar se foi criado corretamente
+cat .htaccess
+
+# 6. Testar localmente
+curl http://localhost/ | head -5
+
+==========================================
+VERIFICAR NO PAINEL HOSTINGER:
+==========================================
+
+O problema pode estar no painel:
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → Configurações
+3. Verifique:
+   - Diretório raiz: public_html
+   - Proteção de Diretório: DESATIVADA (muito importante!)
+   - Permissões: Verificar
+
+4. Se houver "Proteção de Diretório" ativada, DESATIVE!
+
+==========================================
+TESTE FINAL:
+==========================================
+
+# No servidor:
+curl http://localhost/ | head -5
+
+# No seu computador:
+curl http://212.85.6.24/
+
+==========================================
+

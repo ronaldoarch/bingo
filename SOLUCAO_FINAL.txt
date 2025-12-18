@@ -1,0 +1,47 @@
+==========================================
+SOLUÇÃO FINAL PARA COMPILAR NO SERVIDOR
+==========================================
+
+O problema é que o go.sum tem checksums incorretos.
+Execute estes comandos NO SERVIDOR:
+
+cd ~/bingo-backend
+
+# Remover go.sum problemático
+rm -f go.sum
+
+# Desabilitar verificação de sumdb (importante!)
+export GOSUMDB=off
+
+# Limpar cache
+go clean -modcache 2>/dev/null || true
+
+# Gerar novo go.sum automaticamente
+go mod tidy
+
+# Compilar
+go build -o bingo-backend main.go
+
+# Verificar
+ls -lh bingo-backend
+
+# Dar permissão
+chmod +x bingo-backend
+
+# Testar
+./bingo-backend
+
+==========================================
+SE AINDA DER ERRO:
+==========================================
+
+Tente sem o go.sum:
+
+cd ~/bingo-backend
+rm -f go.sum
+export GOSUMDB=off
+go build -o bingo-backend main.go
+chmod +x bingo-backend
+
+==========================================
+

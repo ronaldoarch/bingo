@@ -1,0 +1,46 @@
+==========================================
+COMANDOS PARA EXECUTAR NO SERVIDOR
+==========================================
+
+Você está no servidor. Execute estes comandos na ordem:
+
+1. NAVEGAR PARA O DIRETÓRIO:
+   cd ~/bingo-backend
+
+2. RESOLVER PROBLEMAS DE PERMISSÃO:
+   export GOSUMDB=off
+   export GOPATH=$HOME/go
+   mkdir -p $GOPATH
+
+3. BAIXAR DEPENDÊNCIAS:
+   go mod download
+
+4. SE AINDA DER ERRO, INSTALAR MANUALMENTE:
+   go get github.com/gorilla/mux
+   go get github.com/go-sql-driver/mysql
+   go get golang.org/x/crypto/bcrypt
+
+5. COMPILAR:
+   go build -o bingo-backend main.go
+
+6. DAR PERMISSÃO:
+   chmod +x bingo-backend
+
+7. VERIFICAR SE COMPILOU:
+   ls -lh bingo-backend
+
+8. TESTAR:
+   ./bingo-backend
+
+==========================================
+SE AINDA DER ERRO DE PERMISSÃO:
+==========================================
+
+Execute:
+   export GOSUMDB=off
+   go clean -modcache
+   go mod tidy
+   go build -o bingo-backend main.go
+
+==========================================
+

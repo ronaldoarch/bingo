@@ -1,0 +1,91 @@
+==========================================
+SOLUÇÃO COMPLETA PARA ERRO 403
+==========================================
+
+Execute TODOS estes comandos no servidor:
+
+# 1. Verificar e corrigir permissões do diretório home
+chmod 755 ~
+ls -ld ~
+# Deve mostrar: drwxr-xr-x
+
+# 2. Corrigir permissões de public_html
+chmod 755 ~/public_html
+ls -ld ~/public_html
+# Deve mostrar: drwxr-xr-x
+
+# 3. Corrigir TODAS as permissões recursivamente
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+
+# 4. Verificar permissões finais
+ls -la ~/public_html/
+
+# 5. Criar .htaccess mínimo e correto
+cd ~/public_html
+rm -f .htaccess .htaccess.*
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+EOF
+
+chmod 644 .htaccess
+
+# 6. Verificar se index.html tem conteúdo
+head -10 index.html
+
+# 7. Testar localmente
+curl http://localhost/ | head -10
+
+# 8. Verificar se o Apache consegue ler
+# (teste como usuário apache se possível)
+
+==========================================
+VERIFICAR CONFIGURAÇÃO NO PAINEL HOSTINGER:
+==========================================
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → Configurações
+3. Verifique:
+   - Diretório raiz do site (deve ser: public_html)
+   - Se há proteção de diretório ativada
+   - Se há bloqueios de IP
+   - Se há configurações de segurança extras
+
+4. Vá em: Sites → Seu Site → Avançado → Acesso SSH
+   - Verifique se há alguma restrição
+
+==========================================
+ALTERNATIVA: VERIFICAR LOGS DO APACHE:
+==========================================
+
+# Ver logs de erro (se tiver acesso)
+tail -f ~/logs/error_log
+
+# Ou verificar logs do sistema
+# (pode precisar de acesso root)
+
+==========================================
+TESTE FINAL:
+==========================================
+
+# No servidor, teste:
+curl http://localhost/
+
+# No seu computador, teste:
+curl http://212.85.6.24/
+
+# Se localhost funciona mas externo não,
+# pode ser configuração do firewall/Apache
+
+==========================================
+SE NADA FUNCIONAR:
+==========================================
+
+Pode ser necessário:
+1. Contatar suporte da Hostinger
+2. Verificar se o domínio/IP está configurado corretamente
+3. Verificar se há algum bloqueio no firewall
+
+==========================================
+

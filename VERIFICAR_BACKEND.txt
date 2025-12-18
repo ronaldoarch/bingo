@@ -1,0 +1,42 @@
+==========================================
+VERIFICAR SE BACK-END ESTÁ RODANDO
+==========================================
+
+Execute no servidor para verificar:
+
+# Ver se o processo está rodando
+ps aux | grep bingo-backend
+
+# Ver logs em tempo real
+tail -f ~/bingo-backend/bingo.log
+
+# Ver últimas linhas do log
+tail -n 20 ~/bingo-backend/bingo.log
+
+# Testar se a API está respondendo
+curl http://localhost:8080/login -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"username":"user1","password":"password"}'
+
+# Ou testar de fora (do seu computador)
+curl http://212.85.6.24:8080/login -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"username":"user1","password":"password"}'
+
+==========================================
+SE PRECISAR PARAR:
+==========================================
+
+kill 579428
+
+# Ou usar o script
+./stop_backend.sh
+
+==========================================
+SE PRECISAR REINICIAR:
+==========================================
+
+./start_background.sh
+
+==========================================
+

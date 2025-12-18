@@ -1,0 +1,41 @@
+==========================================
+COMANDOS PARA LITESPEED - EXECUTAR NO SERVIDOR
+==========================================
+
+Copie e cole TODOS estes comandos:
+
+chmod 755 ~
+chmod 755 ~/public_html
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+ls -ld ~
+ls -ld ~/public_html
+cd ~/public_html
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+chmod 644 .htaccess
+head -10 index.html
+curl http://localhost/ | head -10
+
+==========================================
+DEPOIS EXECUTE NO SEU COMPUTADOR:
+==========================================
+
+curl http://212.85.6.24/
+
+# Se ainda der 403, verifique no painel Hostinger:
+# Sites → Seu Site → Configurações
+# Desative "Proteção de Diretório" se estiver ativada
+
+==========================================
+

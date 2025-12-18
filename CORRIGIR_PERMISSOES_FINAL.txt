@@ -1,0 +1,69 @@
+==========================================
+CORRIGIR PERMISSÕES DO DIRETÓRIO PAI
+==========================================
+
+O problema é que o diretório ~ tem permissão drwx--x---
+Isso impede o Apache de ler os arquivos.
+
+Execute no servidor:
+
+# 1. Corrigir permissões do diretório home
+chmod 755 ~
+
+# 2. Verificar se mudou
+ls -ld ~
+
+# 3. Corrigir permissões de public_html
+chmod 755 ~/public_html
+
+# 4. Verificar permissões dos arquivos
+chmod 644 ~/public_html/*
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+
+# 5. Criar .htaccess mínimo (se não existir)
+cd ~/public_html
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+chmod 644 .htaccess
+
+# 6. Testar acesso externo
+# No seu computador:
+curl http://212.85.6.24/
+
+==========================================
+VERIFICAR PERMISSÕES FINAIS:
+==========================================
+
+ls -ld ~
+ls -ld ~/public_html
+ls -la ~/public_html/index.html
+
+# Deve mostrar:
+# drwxr-xr-x para diretórios
+# -rw-r--r-- para arquivos
+
+==========================================
+SE AINDA DER 403:
+==========================================
+
+Pode ser configuração do Apache na Hostinger.
+Verifique no painel:
+https://hpanel.hostinger.com/
+
+Vá em: Sites → Seu Site → Configurações
+Verifique se há alguma restrição
+
+==========================================
+

@@ -1,0 +1,56 @@
+==========================================
+VERIFICAR ONDE ESTÃO OS ARQUIVOS
+==========================================
+
+Execute no servidor para verificar:
+
+# 1. Verificar estrutura completa
+cd ~/public_html
+ls -la
+pwd
+
+# 2. Verificar se há subdiretórios
+find . -name "index.html" -type f
+
+# 3. Verificar estrutura de diretórios
+tree -L 3
+# OU se não tiver tree:
+ls -laR | grep -E "^d|index.html"
+
+# 4. Verificar se os arquivos estão diretamente em public_html
+ls -la ~/public_html/index.html
+ls -la ~/public_html/static/
+
+==========================================
+SE OS ARQUIVOS ESTÃO EM SUBDIRETÓRIO:
+==========================================
+
+# Se encontrar index.html em subdiretório, mover arquivos:
+
+cd ~/public_html
+
+# Exemplo: se estiver em uma pasta "build"
+# mv build/* .
+# rmdir build
+
+# OU criar link simbólico:
+# ln -s build/index.html index.html
+
+==========================================
+REFAZER UPLOAD CORRETO:
+==========================================
+
+Se os arquivos não estão lá, refazer upload:
+
+# No seu computador local:
+cd /Users/ronaldodiasdesousa/Desktop/Bingo/bingo-frontend/build
+
+# Verificar o que tem na pasta build
+ls -la
+
+# Fazer upload direto para public_html (sem subdiretórios)
+scp -P 65002 * u127271520@212.85.6.24:~/public_html/
+scp -P 65002 -r static u127271520@212.85.6.24:~/public_html/
+
+==========================================
+

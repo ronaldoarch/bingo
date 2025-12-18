@@ -1,0 +1,50 @@
+==========================================
+COMANDOS PARA RESOLVER ERRO DE ULIMIT
+==========================================
+
+Copie e cole estes comandos NO SERVIDOR:
+
+cd ~/bingo-backend
+
+# Aumentar limite de processos
+ulimit -u 4096
+
+# Verificar se aumentou
+ulimit -u
+
+# Configurar variáveis
+export GOSUMDB=off
+export GOMAXPROCS=2
+
+# Remover go.sum
+rm -f go.sum
+
+# Limpar e compilar
+go clean -modcache 2>/dev/null || true
+go mod tidy
+go build -o bingo-backend main.go
+
+# Verificar
+ls -lh bingo-backend
+
+# Dar permissão
+chmod +x bingo-backend
+
+# Testar
+./bingo-backend
+
+==========================================
+SE AINDA DER ERRO:
+==========================================
+
+Tente com apenas 1 thread:
+
+GOMAXPROCS=1 go build -o bingo-backend main.go
+
+OU aumente mais o ulimit:
+
+ulimit -u 8192
+go build -o bingo-backend main.go
+
+==========================================
+

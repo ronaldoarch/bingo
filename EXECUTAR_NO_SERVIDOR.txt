@@ -1,0 +1,59 @@
+==========================================
+EXECUTAR COMANDOS NO SERVIDOR
+==========================================
+
+Você precisa conectar ao servidor primeiro!
+
+1. CONECTAR AO SERVIDOR:
+   ssh -p 65002 u127271520@212.85.6.24
+
+2. DEPOIS DE CONECTAR, execute estes comandos:
+
+chmod 755 ~
+chmod 755 ~/public_html
+find ~/public_html -type d -exec chmod 755 {} \;
+find ~/public_html -type f -exec chmod 644 {} \;
+
+# Verificar permissões
+ls -ld ~
+ls -ld ~/public_html
+
+# Criar .htaccess
+cd ~/public_html
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+chmod 644 .htaccess
+
+# Testar localmente NO SERVIDOR
+curl http://localhost/ | head -10
+
+3. SAIR DO SERVIDOR:
+   exit
+
+4. TESTAR DO SEU COMPUTADOR:
+   curl http://212.85.6.24/
+
+==========================================
+VERIFICAR NO PAINEL HOSTINGER:
+==========================================
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → Configurações
+3. Verifique:
+   - Diretório raiz: public_html
+   - Proteção de Diretório: DESATIVADA
+   - Não deve haver bloqueios
+
+==========================================
+

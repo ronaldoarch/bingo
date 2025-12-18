@@ -1,0 +1,65 @@
+==========================================
+ACESSAR O SITE CORRETO
+==========================================
+
+Você está acessando o FILE MANAGER, não o SITE!
+
+❌ ERRADO: srv2022-files.hstgr.io/.../public_html/
+✅ CORRETO: http://212.85.6.24
+✅ CORRETO: http://lightsteelblue-wren-733543.hostingersite.com
+
+==========================================
+URLs CORRETAS PARA ACESSAR:
+==========================================
+
+1. Via IP:
+   http://212.85.6.24
+
+2. Via domínio:
+   http://lightsteelblue-wren-733543.hostingersite.com
+
+3. Se configurou domínio personalizado:
+   http://seudominio.com
+
+==========================================
+NÃO USE:
+==========================================
+
+❌ srv2022-files.hstgr.io (é o file manager)
+❌ Qualquer URL com /files/public_html/ (é o file manager)
+
+==========================================
+VERIFICAR SE O SITE ESTÁ FUNCIONANDO:
+==========================================
+
+No seu computador, teste:
+
+curl http://212.85.6.24
+
+# Ou no navegador, acesse diretamente:
+http://212.85.6.24
+
+==========================================
+SE AINDA DER ERRO 403 OU PÁGINA VAZIA:
+==========================================
+
+Execute no servidor:
+
+cd ~/public_html
+
+# Verificar conteúdo do index.html
+head -30 index.html
+
+# Verificar .htaccess
+cat .htaccess
+
+# Testar localmente
+curl http://localhost/index.html | head -20
+
+# Se necessário, remover .htaccess temporariamente
+mv .htaccess .htaccess.teste
+# Testar acesso
+# Se funcionar, recriar .htaccess simples
+
+==========================================
+

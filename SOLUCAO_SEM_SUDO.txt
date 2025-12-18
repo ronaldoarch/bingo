@@ -1,0 +1,108 @@
+==========================================
+RODAR BACK-END SEM SUDO (HOSTINGER)
+==========================================
+
+Na Hostinger, usuários geralmente não têm sudo.
+Use estas alternativas:
+
+==========================================
+OPÇÃO 1: RODAR EM BACKGROUND COM NOHUP
+==========================================
+
+# No servidor, execute:
+
+cd ~/bingo-backend
+
+# Criar script de inicialização
+nano start_background.sh
+
+Cole:
+
+#!/bin/bash
+cd ~/bingo-backend
+export DB_USER="u127271520_bingo"
+export DB_PASSWORD="2403Auror@"
+export DB_HOST="127.0.0.1"
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"
+export PORT="8080"
+nohup ./bingo-backend > bingo.log 2>&1 &
+echo $! > bingo.pid
+echo "Back-end iniciado em background. PID: $(cat bingo.pid)"
+echo "Logs em: ~/bingo-backend/bingo.log"
+
+Salvar: Ctrl+X, Y, Enter
+
+Dar permissão:
+chmod +x start_background.sh
+
+Executar:
+./start_background.sh
+
+==========================================
+OPÇÃO 2: USAR SCREEN (SE DISPONÍVEL)
+==========================================
+
+# Verificar se screen está instalado
+which screen
+
+# Se estiver instalado:
+screen -S bingo
+cd ~/bingo-backend
+export DB_USER="u127271520_bingo"
+export DB_PASSWORD="2403Auror@"
+export DB_HOST="127.0.0.1"
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"
+export PORT="8080"
+./bingo-backend
+
+# Desconectar: Ctrl+A, depois D
+# Reconectar: screen -r bingo
+
+==========================================
+OPÇÃO 3: USAR TMUX (SE DISPONÍVEL)
+==========================================
+
+# Verificar se tmux está instalado
+which tmux
+
+# Se estiver instalado:
+tmux new -s bingo
+cd ~/bingo-backend
+export DB_USER="u127271520_bingo"
+export DB_PASSWORD="2403Auror@"
+export DB_HOST="127.0.0.1"
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"
+export PORT="8080"
+./bingo-backend
+
+# Desconectar: Ctrl+B, depois D
+# Reconectar: tmux attach -t bingo
+
+==========================================
+COMANDOS ÚTEIS:
+==========================================
+
+# Ver se está rodando
+ps aux | grep bingo-backend
+
+# Ver logs (se usou nohup)
+tail -f ~/bingo-backend/bingo.log
+
+# Parar processo (se usou nohup)
+kill $(cat ~/bingo-backend/bingo.pid)
+
+# Ou encontrar e matar manualmente
+ps aux | grep bingo-backend
+kill <PID>
+
+==========================================
+RECOMENDAÇÃO:
+==========================================
+
+Use a OPÇÃO 1 (nohup) - é a mais simples e funciona sempre!
+
+==========================================
+

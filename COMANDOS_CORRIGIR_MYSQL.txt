@@ -1,0 +1,61 @@
+==========================================
+CORRIGIR ERRO DE ACESSO MYSQL
+==========================================
+
+O erro mostra que você precisa:
+1. Usar a SENHA REAL do MySQL (não "sua_senha_mysql")
+2. Usar 127.0.0.1 ao invés de localhost
+
+Execute no servidor:
+
+cd ~/bingo-backend
+
+# 1. PRIMEIRO: Teste a conexão MySQL diretamente
+# (Substitua pela senha REAL do seu MySQL)
+mysql -u u127271520_bingo -p -h 127.0.0.1 u127271520_bingo
+
+# Se conectar, digite:
+# USE u127271520_bingo;
+# SHOW TABLES;
+# exit;
+
+# 2. Se a conexão MySQL funcionou, configure as variáveis:
+export DB_USER="u127271520_bingo"
+export DB_PASSWORD="SUA_SENHA_REAL_AQUI"  # ⚠️ SUBSTITUA pela senha real!
+export DB_HOST="127.0.0.1"  # Use 127.0.0.1 para forçar IPv4
+export DB_PORT="3306"
+export DB_NAME="u127271520_bingo"
+export PORT="8080"
+
+# 3. Recompilar com a correção (se necessário)
+# (Já atualizei o código para usar 127.0.0.1)
+# Faça upload do db/connection.go atualizado OU apenas use DB_HOST="127.0.0.1"
+
+# 4. Testar
+./bingo-backend
+
+==========================================
+OBTER SENHA REAL DO MYSQL:
+==========================================
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → MySQL Databases
+3. Clique no ícone de "olho" ou "mostrar" ao lado da senha
+4. Copie a senha REAL
+5. Use essa senha no export DB_PASSWORD
+
+==========================================
+SE AINDA DER ERRO:
+==========================================
+
+Verifique se:
+- O usuário MySQL está correto
+- A senha está correta (sem espaços extras)
+- O nome do banco está correto
+- O banco de dados existe
+
+Teste novamente:
+mysql -u SEU_USUARIO -p -h 127.0.0.1 SEU_BANCO
+
+==========================================
+

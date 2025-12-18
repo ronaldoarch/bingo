@@ -1,0 +1,56 @@
+==========================================
+VERIFICAR CONTEÚDO DOS ARQUIVOS
+==========================================
+
+Execute no servidor para verificar:
+
+# 1. Ver conteúdo do index.html
+cat ~/public_html/index.html
+
+# 2. Ver qual .htaccess está ativo
+ls -la ~/public_html/.htaccess*
+
+# 3. Ver conteúdo do .htaccess atual
+cat ~/public_html/.htaccess
+
+# 4. Verificar se há erros no .htaccess
+# (se houver erro de sintaxe, pode causar 403 ou página vazia)
+
+# 5. Testar acesso direto ao arquivo
+curl http://localhost/index.html
+# OU
+curl http://212.85.6.24/index.html
+
+==========================================
+SE O INDEX.HTML ESTÁ VAZIO OU INCORRETO:
+==========================================
+
+# Refazer upload do index.html
+# No seu computador:
+cd /Users/ronaldodiasdesousa/Desktop/Bingo/bingo-frontend/build
+scp -P 65002 index.html u127271520@212.85.6.24:~/public_html/
+
+==========================================
+SE O .HTACCESS ESTÁ COM PROBLEMA:
+==========================================
+
+# Remover temporariamente para testar
+cd ~/public_html
+mv .htaccess .htaccess.teste
+# Testar acesso
+# Se funcionar, o problema é o .htaccess
+
+# Criar .htaccess mínimo:
+cat > .htaccess << 'EOF'
+DirectoryIndex index.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+EOF
+
+==========================================
+

@@ -1,0 +1,64 @@
+==========================================
+SOLUÇÃO PARA PROBLEMA DE GRUPO APACHE
+==========================================
+
+O diretório ~ tem grupo "apache" mas pode não ter permissões corretas.
+Execute no servidor:
+
+# 1. Verificar grupos do usuário
+groups
+id
+
+# 2. Verificar permissões do diretório pai
+ls -ld ~
+# Veja o grupo (deve ser apache)
+
+# 3. Garantir que o grupo apache tem permissão de leitura
+# O diretório já está com drwxr-xr-x, mas vamos garantir
+chmod 755 ~
+chmod g+r ~
+chmod g+x ~
+
+# 4. Verificar se public_html tem grupo correto
+ls -ld ~/public_html
+
+# 5. Se necessário, mudar grupo de public_html para apache
+chgrp apache ~/public_html 2>/dev/null || echo "Não foi possível mudar grupo"
+
+# 6. Garantir permissões corretas
+chmod 755 ~/public_html
+chmod g+r ~/public_html
+chmod g+x ~/public_html
+
+# 7. Verificar permissões finais
+ls -ld ~
+ls -ld ~/public_html
+
+# 8. Testar novamente
+curl http://localhost/ | head -5
+
+==========================================
+VERIFICAR NO PAINEL HOSTINGER:
+==========================================
+
+O problema pode estar no painel:
+
+1. Acesse: https://hpanel.hostinger.com/
+2. Vá em: Sites → Seu Site → Configurações
+3. Verifique:
+   - Diretório raiz: public_html
+   - Proteção de Diretório: DESATIVADA
+   - Permissões de arquivos: Verificar
+
+4. Vá em: Sites → Seu Site → Avançado → Permissões
+   - Verifique se há alguma restrição
+
+==========================================
+SE AINDA DER 403:
+==========================================
+
+Pode ser necessário contatar suporte da Hostinger.
+O problema pode estar na configuração do LiteSpeed no servidor.
+
+==========================================
+

@@ -1,0 +1,42 @@
+==========================================
+COMANDOS PARA EXECUTAR NO SERVIDOR
+==========================================
+
+Você está conectado ao servidor. Execute estes comandos:
+
+1. VERIFICAR SE GO ESTÁ INSTALADO:
+   go version
+
+2. SE GO ESTIVER INSTALADO, COMPILAR:
+   cd ~/bingo-backend
+   go mod download
+   go build -o bingo-backend main.go
+   chmod +x bingo-backend
+
+3. CONFIGURAR VARIÁVEIS DE AMBIENTE:
+   cd ~/bingo-backend
+   cp env.template .env
+   nano .env
+   
+   Cole estas configurações (ajuste com suas credenciais MySQL):
+   DB_USER=seu_usuario_mysql
+   DB_PASSWORD=sua_senha_mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_NAME=bingo
+   PORT=8080
+
+4. TESTAR:
+   ./bingo-backend
+
+==========================================
+PARA FAZER UPLOAD DO CÓDIGO-FONTE
+==========================================
+
+No seu computador local (NOVO TERMINAL), execute:
+
+cd /Users/ronaldodiasdesousa/Desktop/Bingo
+scp -P 65002 -r bingo-backend/* u127271520@212.85.6.24:~/bingo-backend/
+
+(Digite sua senha SSH quando solicitado)
+
