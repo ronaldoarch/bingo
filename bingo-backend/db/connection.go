@@ -107,3 +107,23 @@ func GetUserByUsername(username string) (models.User, error) {
 	return user, nil
 }
 
+// CreateUser cria um novo usuário no banco de dados
+func CreateUser(username, hashedPassword string) (models.User, error) {
+	var user models.User
+	result, err := db.Exec("INSERT INTO users (username, password) VALUES (?, ?)", username, hashedPassword)
+	if err != nil {
+		return user, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return user, err
+	}
+
+	user.ID = int(id)
+	user.Username = username
+	user.Password = hashedPassword
+
+	return user, nil
+}
+

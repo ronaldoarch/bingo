@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Login() {
+function Login({ onLoginSuccess, onGoToRegister }) {
   const [loginInfo, setLoginInfo] = useState({
     username: '',
     password: '',
@@ -34,9 +34,10 @@ function Login() {
       const data = await response.json();
 
       if (data.success) {
-        // Redirecionar para página principal ou home
-        alert('Login bem-sucedido!');
-        // Aqui você pode redirecionar: window.location.href = '/home';
+        // Chamar callback de sucesso com dados do usuário
+        if (onLoginSuccess) {
+          onLoginSuccess(data.user);
+        }
       } else {
         alert(data.message || 'Credenciais inválidas!');
       }
@@ -70,7 +71,7 @@ function Login() {
           <button type="submit" className="btn-green">
             Entrar
           </button>
-          <button type="button" className="btn-purple">
+          <button type="button" className="btn-purple" onClick={onGoToRegister}>
             Registre-se Já!
           </button>
         </div>

@@ -18,6 +18,9 @@ func main() {
 	// Rota de Login
 	r.HandleFunc("/login", handlers.Login).Methods("POST")
 
+	// Rota de Registro
+	r.HandleFunc("/register", handlers.Register).Methods("POST")
+
 	// Obter porta das variáveis de ambiente ou usar padrão
 	port := getEnv("PORT", "8080")
 	if port[0] != ':' {
