@@ -46,11 +46,15 @@ func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Obter origem permitida das variáveis de ambiente ou usar wildcard
 		allowedOrigin := getEnv("CORS_ORIGIN", "*")
+		
+		// Definir headers CORS ANTES de qualquer resposta
 		w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.Header().Set("Access-Control-Max-Age", "3600")
 
+		// Responder imediatamente para requisições OPTIONS (preflight)
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
 			return

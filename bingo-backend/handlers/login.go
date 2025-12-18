@@ -11,12 +11,14 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	// Garantir que Content-Type está definido
+	w.Header().Set("Content-Type", "application/json")
+	
 	var loginDetails models.LoginDetails
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&loginDetails)
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": false,
@@ -28,7 +30,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// Conectar ao banco de dados e verificar as credenciais
 	user, err := db.GetUserByUsername(loginDetails.Username)
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": false,
@@ -40,7 +41,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// Comparar a senha com o hash armazenado
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginDetails.Password))
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": false,
@@ -50,7 +50,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Se tudo estiver certo, responder com sucesso
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": "Login bem-sucedido",
